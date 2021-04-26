@@ -1,2 +1,2 @@
-# oreder_to_edin
+# order_to_edin
 Заказ дистрибьютера "Сандора" в систему EDIN
