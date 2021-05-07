@@ -9,44 +9,53 @@ from selenium.webdriver.chrome.options import Options
 
 '''
 '''
-# from selenium import webdriver
-
-
-# binary = FirefoxBinary(r'C:\Program Files (x86)\Mozilla Firefox\firefox.exe')
-# driver = webdriver.Firefox(firefox_binary=binary, executable_path=gecko+'.exe')
 
 def driver_init():
     # gecko = os.path.normpath(os.path.join(os.path.dirname(__file__), 'geckodriver'))
     # binary = webdriver.FirefoxBinary(r'C:\Program Files (x86)\Mozilla Firefox\firefox.exe')
     # driver = webdriver.Firefox(firefox_binary=binary, executable_path=gecko+'.exe')
-    # driver = webdriver.Firefox()
-    driver = webdriver.Chrome()
+    driver = webdriver.Firefox()
+    # driver = webdriver.Chrome()
     return driver
 
 def login(driver):
     login = 'SonnihDistr'
     password = 'sonnihkojan11'
     driver.get('https://edo-v2.edi-n.com')# login page
+    driver.implicitly_wait(7)
     elem = driver.find_element_by_id("f_email")
+    time.sleep(0.1)
     elem.send_keys(login)
     elem = driver.find_element_by_id("f_password")
+    time.sleep(0.1)
     elem.send_keys(password)
+    time.sleep(0.1)
     driver.find_element_by_class_name('btn.btn-primary.block.full-width.m-b').click()
-
-def go_to_price_list(driver):
-    driver.get('https://edo-v2.edi-n.com/app/#/service/distr-retailer/chain/list/contractparties/0')
-    return driver.get('https://edo-v2.edi-n.com/app/#/service/distr-retailer/pricelist/42868')
-
-# ищем таблицу
 
 def main():
     driver = driver_init()
     login(driver)
-    table_price_list = go_to_price_list(driver)
-    table = table_price_list.find_element_('retailer_main_table')
+    driver.get('https://edo-v2.edi-n.com/app/#/service/distr-retailer/chain/list/contractparties/0')
+    driver.get('https://edo-v2.edi-n.com/app/#/service/distr-retailer/pricelist/42868')
+    driver.implicitly_wait(10)
+    table = driver.find_element_by_id("retailer_main_table")
 
-    for row in table.find_elements_by_xpath(".//tr"):
+    count = 0
+    for row in table.find_elements_by_xpath(".//tr[@class='product-row']"):
+        count += 1
         print(row.text)
+        if row.text.find('4823061320339')>-1:
+            # driver.switch_to.frame(
+            try:
+                row.find_elements_by_xpath(".//input[@class='ng-untouched ng-pristine ng-valid']")[1].send_keys("2")
+            except Exception as e:
+                print(e)
+
+        print(row.text.find('4823061320339'))
+        # print(row.tag_name)
+        if count>30:
+            break
+
 
 if __name__=="__main__":
     main()
