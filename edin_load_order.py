@@ -1,15 +1,13 @@
-import time
+import tkinter as tk
+from tkinter import messagebox
+from tkinter.filedialog import askopenfilename
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import TimeoutException
 
 import import_order_xls
-'''
-'''
+
+'''Загрузка заказа на сайт из файла эксель.'''
 
 
 def driver_init():
@@ -74,11 +72,19 @@ def main(file):
                         )[1].send_keys(str(int(item['qtypack'])))
                     except Exception as e:
                         print(e)
-        print('Script finish')
+        # print('Script finish')
+        messagebox.showinfo(title='Готово', message='Загрузка закончена')
     else:
+        messagebox.showerror(title='Ошибка', message='Не получилось прочитать заказник')
         print('order_list empty')
 
 
 if __name__=="__main__":
-    file = r'ВІММ-БІЛЛЬ-ДАНН заказник март21.xls'
+    # file = r'ВІММ-БІЛЛЬ-ДАНН заказник март21.xls'
+    root = tk.Tk()
+    root.withdraw()
+    file = askopenfilename(
+        title='Выберите файл с заказником эксель',
+        filetypes=(('xls files', '*.xls'),)
+    )
     main(file)
