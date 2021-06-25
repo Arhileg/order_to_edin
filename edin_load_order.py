@@ -40,8 +40,8 @@ def click_elem(driver, name_elem, by_attribute):
 
 
 def login(driver):
-    login_name = 'SonnihDistr'
-    password = 'sonnihkojan11'
+    login_name = 'LOGIN'
+    password = 'PASSWORD'
     driver.get('https://edo-v2.edi-n.com')# login page
     send_text(driver, "f_email", login_name, By.ID)
     send_text(driver, "f_password", password, By.ID)
